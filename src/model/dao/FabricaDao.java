@@ -8,6 +8,6 @@ public class FabricaDao {
 	public static VendedorDao  crearVendedorDao() {
 		//--Instanciamos la Implementacion VendedorDaoJDBC()--//
 		//--la  cual  implementa  la  Interface VendedorDao --//
-		return new VendedorDaoJDBC();
+		return new VendedorDaoJDBC(db.Conexion.getConexion());
 	}
 }

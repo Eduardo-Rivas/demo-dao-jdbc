@@ -12,7 +12,6 @@ import java.util.Properties;
 public class Conexion {
 	public static Connection conn = null;
 	
-	
 	//--Cramos un Método para Abrir la Conexión--//
 	public static Connection getConexion() {
 		if(conn == null) {
@@ -46,8 +45,6 @@ public class Conexion {
 			throw new Dbexception(e.getMessage());
 		}
 	}
-
-	
 	
 	//--Método para Cerrar la Conexión--//
 	public static void cerrarConexion() {
