@@ -1,7 +1,10 @@
 package aplicacion;
 
+import java.util.List;
+
 import model.dao.FabricaDao;
 import model.dao.VendedorDao;
+import model.entitis.Departamento;
 import model.entitis.Vendedor;
 
 public class Programa {
@@ -17,6 +20,18 @@ public class Programa {
 		System.out.println(vendedor);
 		System.out.println("=== Final de Test Nro. 1 Clase: VendedorDaoJDBC Método: findById() ===");
 
+		//--Llamamos al Método findByDepartamento() pasando parámetro departamentoId=2--//
+		Departamento dep = new Departamento(2, null);
+		System.out.println("\n=== Inicio de Test Nro. 2 Clase: VendedorDaoJDBC Método: findByDepartamento() ===");
+		//--Voy a vendao.findByDepartamento(dep) return lista--//
+		List<Vendedor> lista = vendao.findByDepartamento(dep);
+		//--Mostramos la Lista de Vendedores--//
+		for(Vendedor xven : lista) {
+			System.out.println(xven);
+		}
+		System.out.println("=== Final de Test Nro. 2 Clase: VendedorDaoJDBC Método: findByDepartamento ===");
+
+		
 	}
 
 }
