@@ -1,5 +1,6 @@
 package aplicacion;
 
+import java.util.Date;
 import java.util.List;
 
 import model.dao.FabricaDao;
@@ -31,7 +32,22 @@ public class Programa {
 		}
 		System.out.println("=== Final de Test Nro. 2 Clase: VendedorDaoJDBC Método: findByDepartamento ===");
 
-		
+		//--Llamamos al Método findAll()--//
+		System.out.println("\n=== Inicio de Test Nro. 3 Clase: VendedorDaoJDBC Método: findAll() ===");
+		//--Voy a vendao.findAll() return una lista--//
+		lista = vendao.findAll();
+		//--Mostramos la Lista de Vendedores--//
+		for(Vendedor xven : lista) {
+			System.out.println(xven);
+		}
+		System.out.println("=== Final de Test Nro. 3 Clase: VendedorDaoJDBC Método: findAll ===");
+
+		//--Llamamos al Método insert()--//
+		System.out.println("\n=== Inicio de Test Nro. 4 Clase: VendedorDaoJDBC Método: insert() ===");
+		Vendedor newVendedor = new Vendedor(null,"Larry","larry@gmail.com", new Date(), 4000.00, dep);
+		vendao.insert(newVendedor);
+		System.out.println("Nuevo Registro Incluido : "+newVendedor.getId());
+		System.out.println("=== Final de Test Nro. 4 Clase: VendedorDaoJDBC Método: insert ===");
 	}
 
 }

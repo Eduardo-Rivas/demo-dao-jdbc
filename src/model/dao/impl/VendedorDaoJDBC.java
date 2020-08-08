@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,45 @@ public class VendedorDaoJDBC implements VendedorDao{
 	
 	@Override
 	public void insert(Vendedor ven) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
-	}
+		try {
+			st = conn.prepareStatement(
+			    "INSERT INTO vendedor "
+			   +"(Nombre,Email,Fecha,SalarioBase,DepartamentoId) "
+			   +"VALUES (?,?,?,?,?)", 
+			   Statement.RETURN_GENERATED_KEYS);
+			
+			//--Configuramos los Campos--//
+			st.setString(1, ven.getNombre());
+			st.setString(2, ven.getEmail());
+			st.setDate(3, new java.sql.Date(ven.getFecha().getTime()));
+			st.setDouble(4, ven.getSalarioBase());
+			st.setInt(5, ven.getDepartamento().getId());
+			
+			int fila = st.executeUpdate();
+			if(fila > 0) {
+				//--Tomamos el Id Generado--//
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next() == true) {
+					//--Asignamos el Id--//
+					int id = rs.getInt(1);
+					//--Lo Agregamos al Obj. Vendedor--//
+					ven.setId(id);
+				}
+				Conexion.cerrarRs(rs);
+			}
+			else {
+				throw new Dbexception("Error Inesperado, No Hay Registros Insertados");
+			}
+		} 
+		catch (SQLException e) {
+			throw new Dbexception(e.getMessage());
+		}
+		finally {
+			Conexion.cerrarSt(st);
+		}
+	}//--Fin del Método insert()--//
 
 	@Override
 	public void update(Vendedor ven) {
@@ -119,6 +156,51 @@ public class VendedorDaoJDBC implements VendedorDao{
 			Conexion.cerrarSt(st);
 		}
 	}
+
+	@Override
+	public List<Vendedor> findAll() {
+		PreparedStatement st = null;
+		ResultSet         rs = null;
+		
+		try {
+			st = conn.prepareStatement(
+			    "SELECT vendedor.*, departamento.Nombre AS Nomdep "
+			   +"FROM vendedor INNER JOIN departamento "
+			   +"ON vendedor.departamentoId = departamento.Id "
+			   +"ORDER BY vendedor.Nombre");
+
+			rs = st.executeQuery();
+			List<Vendedor> lista = new ArrayList<>();
+			HashMap<Integer, Departamento> map = new HashMap<>();
+			
+			while(rs.next() == true) {
+				//--Tomo el Valor del Depart. segun el Id--//
+				Departamento dep1 = map.get(rs.getInt("departamentoId"));
+				 
+				//--Id del Departamento no existe--//
+				if(dep1 == null){
+					//--Método para Instanciar Departamento--//
+					dep1 = instandep(rs);
+					
+					//--Agregamos al map--//
+					map.put(dep1.getId(), dep1);
+				}
+				//--Método para Instanciar Vendedor--//
+				Vendedor ven = instanven(rs, dep1);
+				//--Agregamos Vendedor a la Lista--//
+				lista.add(ven);
+			}
+			return lista;
+		} 
+		catch (SQLException e) {
+			throw new  Dbexception(e.getMessage());
+		}
+		finally {
+			Conexion.cerrarRs(rs);
+			Conexion.cerrarSt(st);
+		}
+	}
+
 	
 	//--Método Interno para Instanciar Vendedor--//
 	private Vendedor instanven(ResultSet rs, Departamento dep) throws SQLException {
@@ -140,11 +222,6 @@ public class VendedorDaoJDBC implements VendedorDao{
 		return dep;
 	}
 
-	@Override
-	public List<Vendedor> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }
