@@ -1,17 +1,18 @@
 package aplicacion;
 
-import java.util.Date;
 import java.util.List;
-
+import java.util.Scanner;
 import model.dao.FabricaDao;
 import model.dao.VendedorDao;
 import model.entitis.Departamento;
 import model.entitis.Vendedor;
-
+ 
 public class Programa {
 
 	public static void main(String[] args) {
-		 
+		//--Instanciamos a Scanner para leer--// 
+		Scanner sc = new Scanner(System.in);
+		
 		//--Hacemos la Inyección de Dependencia--//
 		VendedorDao vendao = FabricaDao.crearVendedorDao();
 		 
@@ -51,6 +52,7 @@ public class Programa {
 		System.out.println("=== Final de Test Nro. 4 Clase: VendedorDaoJDBC Método: insert ===");
 		*/
 		
+		/*--Comentariado para no Actualizar Nuevamente--//
 		//--Llamamos al Método update()--//
 		System.out.println("\n=== Inicio de Test Nro. 5 Clase: VendedorDaoJDBC Método: update() ===");
 		//--Busca los Datos del Vendedor Nro. 1--//
@@ -61,5 +63,17 @@ public class Programa {
 		vendao.update(vendedor);
 		System.out.println("Registro Actualizado : "+vendedor.getId());
 		System.out.println("=== Final de Test Nro. 5 Clase: VendedorDaoJDBC Método: update() ===");
+		*/
+		
+		//--Llamamos al Método delete()--//
+		System.out.println("\n=== Inicio de Test Nro. 6 Clase: VendedorDaoJDBC Método: delete() ===");
+		System.out.print("Entre Nro. de Registro a Elminar :");
+		int id = sc.nextInt();
+		//--Llamamos al Método deleteById() pasandole el id--//
+		vendao.deleteById(id);
+		System.out.println("Registro Nro. :"+id+" Eliminado");
+		System.out.println("=== Final de Test Nro. 6 Clase: VendedorDaoJDBC Método: delete() ===");
+
+		sc.close();
 	}//--Fin del Método main()--//
 }
