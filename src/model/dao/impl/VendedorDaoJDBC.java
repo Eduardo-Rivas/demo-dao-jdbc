@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,8 +69,35 @@ public class VendedorDaoJDBC implements VendedorDao{
 
 	@Override
 	public void update(Vendedor ven) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
+		try {
+			st = conn.prepareStatement(
+				"UPDATE vendedor SET "
+			   +"Nombre = ?, "
+			   +"Email  = ?, "
+			   +"Fecha  = ?, "
+			   +"SalarioBase = ?, "
+			   +"DepartamentoId = ? "
+			   +"WHERE Id = ?");
+			
+			//--Configuramos los Campos--//
+			st.setString(1, ven.getNombre());
+			st.setString(2, ven.getEmail());
+			st.setDate(3, new java.sql.Date(ven.getFecha().getTime()));
+			st.setDouble(4, ven.getSalarioBase());
+			st.setInt(5, ven.getDepartamento().getId());
+			st.setInt(6, ven.getId());
+			
+			//--Ejecutamos la Actualización--//
+			st.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new Dbexception(e.getMessage());
+		}
+		finally {
+			Conexion.cerrarSt(st); 
+		}
 	}
 
 	@Override
