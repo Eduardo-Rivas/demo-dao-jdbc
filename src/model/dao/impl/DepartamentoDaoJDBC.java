@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,38 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 	public DepartamentoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
+	
 	@Override
 	public void insert(Departamento dep) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
+		try {
+			st = conn.prepareStatement(
+				 "INSERT INTO departamento (Nombre) " 
+				+"VALUES(?)",
+				Statement.RETURN_GENERATED_KEYS);
+			
+			//--Configuramos los Campos--//
+			st.setString(1, dep.getNombre());
+			
+			int filas = st.executeUpdate();
+			if(filas > 0){
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next() == true) {
+					int id = rs.getInt(1);
+					dep.setId(id);
+				}
+				Conexion.cerrarRs(rs);
+			}
+			else {
+				throw new Dbexception("Error Inesperado, No Hay Registros Insertados");
+			}
+		} catch (SQLException e) {
+			throw new Dbexception(e.getMessage());
+		}
+		finally {
+			Conexion.cerrarSt(st);
+		}
 	}
 
 	@Override
@@ -38,8 +67,26 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 
 	@Override
 	public Departamento findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet         rs = null; 
+		
+		try {
+			st = conn.prepareStatement(
+				 "SELECT * FROM departamento "
+				+"WHERE Id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next() == true){
+				Departamento dep1 = instanDep(rs);
+				return dep1;
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			throw new Dbexception(e.getMessage());
+		}
+		
 	}
 
 	@Override

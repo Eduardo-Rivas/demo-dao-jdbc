@@ -19,13 +19,26 @@ public class ProgramaDep {
 		
 		//--Llamamamos al Método findAll()--//
 		lista = depDao.findAll();
-		
 		//--Mostramos la Lista de Departamentos--//
 		System.out.println("\n=== Inicio de Test Nro. 1 Clase: DepartamentoDaoJDBC Método: findAll() ===");
 		for(Departamento xdep : lista){
 			System.out.println(xdep);
 		}
 		System.out.println("=== Final de Test Nro. 1 Clase: DepartamentoDaoJDBC Método: findAll() ===");
+
+		//--Mostramos un Departamentos por Id--//
+		System.out.println("\n=== Inicio de Test Nro. 2 Clase: DepartamentoDaoJDBC Método: findById() ===");
+		Departamento departamento = depDao.findById(3);
+		System.out.println(departamento);
+		System.out.println("=== Final de Test Nro. 2 Clase: DepartamentoDaoJDBC Método: findById() ===");
+
+		//--Incluimos un Departamentos--//
+		System.out.println("\n=== Inicio de Test Nro. 3 Clase: DepartamentoDaoJDBC Método: insert() ===");
+		Departamento newdep = new Departamento(null, "Muebles");
+		depDao.insert(newdep);
+		System.out.println("Nuevo Registro Incluido Con Id Nro. : "+newdep.getId());
+		System.out.println(newdep);
+		System.out.println("=== Final de Test Nro. 3 Clase: DepartamentoDaoJDBC Método: insert() ===");
 		
 		sc.close();
 	}
