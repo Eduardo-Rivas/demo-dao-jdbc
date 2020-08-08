@@ -6,7 +6,7 @@ import model.dao.FabricaDao;
 import model.dao.VendedorDao;
 import model.entitis.Departamento;
 import model.entitis.Vendedor;
- 
+  
 public class Programa {
 
 	public static void main(String[] args) {

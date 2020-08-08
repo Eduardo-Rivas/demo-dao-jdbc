@@ -1,6 +1,7 @@
 package model.dao;
 
 import db.Conexion;
+import model.dao.impl.DepartamentoDaoJDBC;
 import model.dao.impl.VendedorDaoJDBC;
 
 public class FabricaDao {
@@ -11,5 +12,10 @@ public class FabricaDao {
 		//--la  cual  implementa  la  Interface VendedorDao --//
 		return new VendedorDaoJDBC(Conexion.getConexion());
 			
+	}
+
+	//--Método Statico Para Instancia Un Departamento--//
+	public static DepartamentoDao crearDepartamentoDao() {
+		return new DepartamentoDaoJDBC(Conexion.getConexion()); 
 	}
 }
