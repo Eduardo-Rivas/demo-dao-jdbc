@@ -51,19 +51,36 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 		finally {
 			Conexion.cerrarSt(st);
 		}
-	}
+	}//--Fin del Método insert()--//
 
 	@Override
 	public void update(Departamento dep) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
-	}
+		try {
+			st = conn.prepareStatement(
+				 "");
+		} 
+		catch (SQLException e) {
+			throw new Dbexception(e.getMessage());
+		}
+		
+	}//--Fin del Método update()--//
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
 		
-	}
+		try {
+			st = conn.prepareStatement(
+				"DELETE FROM departamento WHERE  Id = ?");
+			st.setInt(1, id);
+			st.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new Dbexception(e.getMessage());	
+		}
+	}//--Fin del Método deleteById()--//
 
 	@Override
 	public Departamento findById(Integer id) {
@@ -86,8 +103,7 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 		} catch (SQLException e) {
 			throw new Dbexception(e.getMessage());
 		}
-		
-	}
+	}//--Fin del Método findById()--//
 
 	@Override
 	public List<Departamento> findAll() {
@@ -121,6 +137,6 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 		dep.setId(rs.getInt("Id"));
 		dep.setNombre(rs.getString("Nombre"));		
 		return dep;
-	}
+	}//--Fin del Método Interno instanDep()--//
 
-}
+}//--Fin de la Clase DepartamentoDaoJDBC--//
