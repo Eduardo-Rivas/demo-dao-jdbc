@@ -59,12 +59,23 @@ public class DepartamentoDaoJDBC implements DepartamentoDao {
 		
 		try {
 			st = conn.prepareStatement(
-				 "");
+				"UPDATE departamento SET "
+			   +"Nombre = ?"
+			   +"WHERE Id = ?");  
+			
+			//--Configuramos los Campos--//
+			st.setString(1, dep.getNombre());
+			st.setInt(2, dep.getId());
+			
+			//--Ejecutamos la Actualización--//
+			st.executeUpdate();
 		} 
 		catch (SQLException e) {
 			throw new Dbexception(e.getMessage());
 		}
-		
+		finally {
+			Conexion.cerrarSt(st); 
+		}
 	}//--Fin del Método update()--//
 
 	@Override
